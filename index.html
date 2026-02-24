@@ -340,10 +340,22 @@ src="https://www.facebook.com/tr?id=2328462444319507&ev=PageView&noscript=1"
         });
     </script>
 
-     <script>
-        function customEvent() {
-            fbq('track', 'Subscribe');
-        }
-    </script>
+   <script>
+function trackSubscribe() {
+  // Agar already fire ho chuka hai
+  if (localStorage.getItem('subscribed') === 'true') {
+    console.log("Already subscribed event fired, not sending again.");
+    return;
+  }
+
+  const eventId = 'subscribe_' + Date.now();
+
+  // 🔹 Pixel Event (Browser only)
+  fbq('trackCustom', 'Subscribe', {value: 0.00, currency: 'INR'}, { eventID: eventId });
+
+  // Mark as subscribed (taaki dobara na fire ho)
+  localStorage.setItem('subscribed', 'true');
+}
+</script>
 
 </body></html>
