@@ -313,7 +313,7 @@ src="https://www.facebook.com/tr?id=2328462444319507&ev=PageView&noscript=1"
                     <div class="logo">
                         <img id="logo-image" src="Harsh bhagat.jpg" alt="Educational Channel Logo" loading="lazy">
                     </div>
-                    <a id="telegram-link" onclick="customEvent()" class="cta" href="#">Join Free Telegram</a>
+                    <a id="telegram-link" trackSubscribe(event)" class="cta" href="#">Join Free Telegram</a>
                     <div class="feature-card">
                         <p class="green"><span class="emoji">✅</span> Discover Elite Financial Education & Trading Basics</p>
                     </div>
@@ -338,23 +338,26 @@ src="https://www.facebook.com/tr?id=2328462444319507&ev=PageView&noscript=1"
             document.getElementById('logo-image').src = config.imageSrc;
             document.getElementById('telegram-link').href = config.telegramLink;
         });
-    </script>
 
-   <script>
-function trackSubscribe() {
-  // Agar already fire ho chuka hai
-  if (localStorage.getItem('subscribed') === 'true') {
-    console.log("Already subscribed event fired, not sending again.");
-    return;
-  }
+        
+   function trackSubscribe(event) {
+    event.preventDefault();
 
-  const eventId = 'subscribe_' + Date.now();
+    const telegramUrl = config.telegramLink;
 
-  // 🔹 Pixel Event (Browser only)
-  fbq('trackCustom', 'Subscribe', {value: 0.00, currency: 'INR'}, { eventID: eventId });
+    if (localStorage.getItem('telegram_subscribed') === 'true') {
+        window.open(telegramUrl, "_blank");
+        return;
+    }
 
-  // Mark as subscribed (taaki dobara na fire ho)
-  localStorage.setItem('subscribed', 'true');
+    if (typeof fbq === "function") {
+        fbq('track', 'Subscribe');
+        localStorage.setItem('telegram_subscribed', 'true');
+    }
+
+    setTimeout(function() {
+        window.open(telegramUrl, "_blank");
+    }, 400);
 }
 </script>
 
