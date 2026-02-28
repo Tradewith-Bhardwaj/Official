@@ -313,7 +313,7 @@ src="https://www.facebook.com/tr?id=2328462444319507&ev=PageView&noscript=1"
                     <div class="logo">
                         <img id="logo-image" src="Harsh bhagat.jpg" alt="Educational Channel Logo" loading="lazy">
                     </div>
-                    <a id="telegram-link" onclick="trackSubscribe(event)" class="cta" href="#">Join Free Telegram</a>
+                    <a id="telegram-link" class="cta" href="#">  Join Free Telegram </a>
                     <div class="feature-card">
                         <p class="green"><span class="emoji">✅</span> Discover Elite Financial Education & Trading Basics</p>
                     </div>
@@ -339,26 +339,38 @@ src="https://www.facebook.com/tr?id=2328462444319507&ev=PageView&noscript=1"
             document.getElementById('telegram-link').href = config.telegramLink;
         });
 
+</script>
         
-   function trackSubscribe(event) {
-    event.preventDefault();
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
 
-    const telegramUrl = config.telegramLink;
+  const btn = document.getElementById("telegram-link");
+  if (!btn) return;
 
-    if (localStorage.getItem('telegram_subscribed') === 'true') {
-        window.open(telegramUrl, "_blank");
-        return;
+  btn.addEventListener("click", function (e) {
+
+    // ✅ Sirf real human click
+    if (!e.isTrusted) {
+      e.preventDefault();
+      return;
     }
 
-    if (typeof fbq === "function") {
-        fbq('track', 'Subscribe');
-        localStorage.setItem('telegram_subscribed', 'true');
+    // ✅ Already tracked?
+    if (localStorage.getItem("telegram_subscribed") === "true") {
+      return;
     }
 
-    setTimeout(function() {
-        window.open(telegramUrl, "_blank");
-    }, 400);
-}
+    localStorage.setItem("telegram_subscribed", "true");
+
+    const eventId = "tg_sub_" + Date.now();
+
+    if (typeof fbq !== "undefined") {
+      fbq('track', 'Subscribe', {}, { eventID: eventId });
+    }
+
+  });
+
+});
 </script>
 
 </body></html>
